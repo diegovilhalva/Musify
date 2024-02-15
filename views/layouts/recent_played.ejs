@@ -1,0 +1,15 @@
+<div class="recent-play custom-scrollbar">
+    <h2 class="recent-play-title title-small">Tocadas recentemente</h2>
+    <% if (locals.recentlyPlayed.length) { %>
+        <% let uniqueTrackUri=[] %>
+        <% locals.recentlyPlayed.forEach(({album:{images},artists,id,name:title,uri:trackUri}) => { %>
+            <% if (uniqueTrackUri.includes(trackUri)) return %>
+                <% const text = artists.map(({name}) => name).join(', ')  %> 
+                <%- include('../partials/list_item',{images,title,text,id,trackUri}) %> 
+                <% uniqueTrackUri.push(trackUri) %> 
+       <% }) %> 
+
+    <% } else { %>
+        <p class="body-medium recent-play-text">Nenhuma faixa recentemente</p>
+    <% } %> 
+</div>

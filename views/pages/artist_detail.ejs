@@ -1,0 +1,200 @@
+<% 
+   
+   const {
+    external_urls:{spotify:spotifyUrl},
+    followers:{total:totalFollowers},
+    genres:artistGenres,
+    name:artistName,
+    images:artistImages,
+    uri:artistUri,
+    id:artistId
+   } = locals.artistDetail
+ 
+
+
+    const {
+        url:detailBanner = '/images/album-banner.png',
+        width:detailBannerWidth = 300,
+        height:detailBannerHeight = 300
+    } = artistImages[0] ?? {}
+
+  const {
+    tracks:artistTopTracks
+  } = locals.artistTopTracks
+
+ const {
+    items:artistAlbums,
+    next:artistAlbumnext
+ } = locals.artistAlbum
+ 
+
+ const {
+    artists:releatedArtists
+ } = locals.artistRelatedArtists
+
+ console.log(artistRelatedArtists)
+ %> 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%- include('../layouts/head',{title:`${artistName}`}) %> 
+   <link rel="stylesheet" href="/css/details.css">
+   <style>
+        .page::before {
+            background-image: url("<%= detailBanner %>");
+        }
+
+        .card .card-text {
+            text-transform: capitalize;
+        }
+   </style>
+</head>
+<body>
+    <%- include('../layouts/recent_played',{recentlyPlayed:locals.recentlyPlayedTracks}) %> 
+    <article class="page custom-scrollbar" data-page>
+       
+        <%- include('../partials/top_bar.ejs',locals.currentProfile) %>
+        <%- include('../partials/bottom_nav') %>
+
+        <div class="main" data-main>
+            <section class="detail-header">
+                <figure class="img-holder detail-banner">
+                    <img src="<%=detailBanner%>" width="<%= detailBannerWidth %>" height="<%= detailBannerHeight %> " alt="<%= artistName %> " class="img-cover" data-image-load-anim>
+                </figure>
+
+                <div class="detail-content">
+                    <p class="label-large detail-subtitle">
+                        Artista
+                    </p>
+                    <h2 class="headline-large detail-title">
+                        <%= artistName %> 
+                    </h2>
+
+                    <div class="detail-text has-separator">
+                       <p class="label-large">
+                            <%= totalFollowers %> Seguidores 
+                       </p>
+                       <% if (artistGenres.length) { %>
+                        <span class="separator"></span>
+                        <p class="label-large">
+                            Gêneros musicais - <%= artistGenres.join(' | ') %> 
+                        </p>
+                       <% } %>
+                    </div>
+                    <div class="detail-actions">
+                        <%- include('../partials/play_btn',{
+                            variant:'filled',
+                            dataAttr:`data-uri="${artistUri}"`
+                        })%> 
+                        <a href="<%= spotifyUrl %>" target="_blank" class="btn btn-outline has-icon" data-ripple>
+                            <img src="/images/spotify-primary.svg" width="18" height="18" alt="">
+                            <span class="label-large">Ouvir no Spotify</span>
+                            <div class="state-layer"></div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <div class="divider variant"></div>
+            
+            <% if (artistTopTracks.length) { %>
+             <section class="section">
+                <div class="title-wrapper">
+                    <h2 class="title-large section-title">Músicas populares</h2>
+                </div>
+                <div class="list">
+                    <% artistTopTracks.forEach(({album:{images,name:albumName},artists,
+                         name,duration_ms,id,uri:trackUri},index) => { %>
+                     <% index++ %>
+
+                     <%- include('../partials/list_item',{
+                        title:name,
+                        images,
+                        duration_ms,
+                        id,
+                        trackNumber:index,
+                        albumName,
+                        trackUri
+                     }) %>
+                    <% }); %>
+                </div>
+             </section>
+            <% } %>
+
+            <section class="section">
+                <div class="title-wrapper">
+                    <h2 class="title-large section-title">Discografia</h2>
+                    <% if (artistAlbumnext !== null){ %>
+                        <a href="/artist/<%= artistId %>/album" class="btn btn-link" data-ripple>
+                            <span class="label-large">ver mais</span>
+                            <div class="state-layer"></div>
+                        </a>
+                    <%} %>
+                </div>
+
+                <div class="slider" data-slider>
+                    <div class="slider-inner">
+                        <% artistAlbums.forEach(({id,images,name:title,album_type,release_date,uri}) => { %>
+                            <% const year = new Date(release_date).getFullYear() 
+                               const text = album_type;
+                               const image = images.find(item  => item.width === 300 )
+                            %>
+
+                            <%- include('../partials/card',{
+                                image,
+                                type:'album',
+                                title,
+                                year,
+                                text,
+                                link:`/album/${id}`,
+                                uri
+                            }) %>
+
+                            
+                      <%  }); %>
+                        
+                    </div>
+                </div>
+            </section>
+
+            <% if(releatedArtists.length)  {%>
+                <section class="section">
+                <div class="title-wrapper">
+                    <h2 class="title-large section-title">Artistas relacionados</h2>
+                </div>
+
+                <div class="slider" data-slider>
+                    <div class="slider-inner">
+                        <% releatedArtists.forEach(({name:title,type,images,id,uri}) => { %>
+                            
+                            <% const [image] = images || [] %>
+                            <%- include('../partials/card',{
+                                variant:'artist-card',
+                                title,
+                                image,
+                                type:'artist',
+                                text:type,
+                                link:`/artist/${id}`,
+                                uri
+                            }) %>
+                            
+                      <%  }); %>
+                        
+                    </div>
+                </div>
+            </section>
+            <% } %>
+
+        </div>
+      
+
+
+        <%- include('../layouts/footer')  %> 
+        <%- include('../partials/player_sm') %> 
+        <%- include('../partials/player_lg') %> 
+
+    </article>
+   
+    
+</body>
+</html>

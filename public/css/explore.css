@@ -1,0 +1,55 @@
+
+
+/**
+ * copyright 2024 Diego Vilhalva
+ */
+ 
+
+
+.category-card {
+    height: 120px;
+
+}
+
+.category-card .card-banner {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    right: -16px;
+    bottom: -10px;
+    transform: rotate(30deg);
+    z-index: -1;
+}
+
+.category-card .card-content {
+    padding-inline-end:80px ;
+}
+
+.category-card .card-title {
+    white-space: normal;
+    text-overflow: unset;
+    overflow-wrap: break-word;
+}
+
+
+
+
+
+/* Media queries */
+
+@media (min-width:768px) {
+    .category-card {
+        height: 200px;
+    }
+
+   .category-card .card-content {
+        padding-inline-end:var(--space-4) ;
+   }
+
+   .category-card .card-banner {
+        width:  150px;
+        height: 150px;
+        bottom: -24px;
+   }
+   
+}

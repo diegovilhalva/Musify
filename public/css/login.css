@@ -1,0 +1,164 @@
+
+/**
+ * copyright 2024 Diego Vilhalva
+ */
+ 
+
+
+
+@import url('./variables.css');
+@import url('./reset.css');
+@import url('./base.css');
+@import url('./typography.css');
+
+
+.login-page {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr;
+    padding: var(--space-2);
+    gap: var(--space-2);
+}
+
+:where(.banner,.content){
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-extra-large);
+    overflow: hidden;    
+}
+
+.img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content {
+    background-image: url('/images/login-bg-pattern.png');
+    background-repeat: no-repeat;
+    background-size: 200%;
+    background-position: center;
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+.btn {
+    max-width: max-content;
+    min-width: max-content;
+    height: 40px;
+    padding-inline: var(--space-4) var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    border-radius: var(--radius-full);
+    background-color: var(--primary);
+    color: var(--on-primary);
+    --state-layer-bg:var(--on-primary);
+    transition: box-shadow var(--tr-duration-short-2) var(--tr-easing-linear);
+}
+
+.btn:hover:not(:focus) {
+    box-shadow: var(--shadow-1);
+}
+
+
+
+
+.btn {
+    margin-inline:auto;
+    margin-block-start: var(--space-4);
+}
+
+:has(> .state-layer) {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.state-layer {
+    position: absolute;
+    inset: 0;
+    background-color: var(--state-layer-bg);
+    opacity: 0;
+    transition: opacity var(--tr-duration-short-2) var(--tr-easing-linear);
+}
+
+:has(> .state-layer):hover > .state-layer {
+    opacity: 0.08;
+}
+
+:has(>,.state-layer):is(:focus,:focus-visible,:focus-within,:active){
+    opacity: 0.12;
+}
+
+.link {
+    display: inline-block;
+}
+
+.link:where(:hover,:focus-visible) {text-decoration: underline;}
+
+.link-primary {color: var(--primary);}
+
+.title {
+    font-size: var(--fs-display-medium);
+    line-height: var(--lh-display-medium);
+    letter-spacing: var(--ls-n-025);
+}
+
+/*  Media Queries */
+
+@media (min-width:768px){
+    .title {
+        font-size: var(--fs-display-medium);
+        line-height: var(--lh-display-medium);
+        letter-spacing: var(--ls-n-025);
+    }
+    .btn {margin-block-start: var(--space-8);}
+
+}
+
+
+@media (min-width:1200px){
+    .login-page {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+    }
+    .content {
+        background-size: cover;
+    }
+
+    .logo {
+        margin-inline-end: auto;
+    }
+
+    .logo img {
+        height: 28px;
+        width:auto;
+    }
+
+    .bottom-text{
+        margin-inline-start: auto;
+        font-size: var(--fs-body-large);
+        line-height: var(--lh-body-large);
+        letter-spacing: var(--ls-p-050);
+        font-weight: var(--fw-regular);
+    }
+}
+
+
+@media (min-width:1400px) {
+    .title{
+        font-size: var(--fs-display-large);
+        line-height: var(--lh-display-large);
+    }
+    .btn {
+        margin-block-start: var(--space-10);
+    }
+}

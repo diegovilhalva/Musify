@@ -1,0 +1,10 @@
+
+<a href="/search/<%= locals.filterType%>/<%= locals.query %>  " class="chip <%= locals.filterType === locals.type ? 'active' : ''%> " data-ripple data-search-filter>
+    <span class="material-symbols-rounded icon">
+        check
+    </span>
+    <span class="label-large">
+        <%= locals.text %> 
+    </span>
+    <div class="state-layer"></div>
+</a>

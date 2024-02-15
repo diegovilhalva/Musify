@@ -1,0 +1,29 @@
+<% 
+    const {url = `/images/${locals.type}-banner.png`,width = 300,height = 300} = locals.image ?? {}
+ %>
+
+ <div class="card <%= locals.variant %>" title="<%= locals.title %>" data-ripple>
+    <div class="card-banner">
+        <figure class="img-holder">
+            <img src="<%=url%>" width="<%= width %>" height="<%= height %>"  alt="<%= locals.title %>" class="img-cover" data-image-load-anim loading="lazy" >
+        </figure>
+        <%- include('./play_btn',{
+            variant:'filled',
+            dataAttr:`data-uri="${locals.uri}"`
+        }) %>
+    </div>
+    <div class="card-content">
+        <h3 class="title-medium card-title ellipsis-one-line">
+            <%= locals.title %>
+        </h3>
+        <p class="body-medium card-text has-separator ellipsis-two-line">
+            <% if (locals.year) { %>
+             <span><%= locals.year %></span>
+             <span class="separator"></span>
+            <% } %>
+            <%- locals.text %> 
+        </p>
+    </div>
+    <a href="<%= locals.link %> " class="card-link" aria-label="<%= locals.title %>" ></a>
+    <div class="state-layer"></div>
+ </div>

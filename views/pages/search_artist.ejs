@@ -1,0 +1,55 @@
+<% 
+  const {
+    items:searchArtistItems
+  } =  locals.searchArtist
+%>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('../layouts/head',{title:`Pesquisa | Musify`}) %> 
+    
+</head>
+<body>
+ <%- include('../layouts/recent_played',{recentlyPlayed:locals.recentlyPlayedTracks}) %> 
+ <article class="page custom-scrollbar" data-page>
+    
+     <%- include('../partials/top_bar.ejs',locals.currentProfile) %>
+     <%- include('../partials/bottom_nav') %>
+     <%- include('../layouts/search_filter',{
+        type:locals.type
+    }) %> 
+     <div class="main" data-main>
+        <section class="section">
+          <div class="grid-list">
+            <% searchArtistItems.forEach(({id,images,name:title,type,uri}) => { %>
+                <%
+                    const [image] = images || []
+                 %>                                
+                 <%- include('../partials/card',{
+                    variant:'artist-card',
+                    image,
+                    type:'artist',
+                    title,
+                    text:type,
+                    link:`/artist/${id}`,
+                    uri
+                }) %>
+         <% }) %>
+    
+         </div>
+      <%- include('../partials/pagination',locals.searchArtist) %>
+    </section>
+
+     </div>
+   
+     <%- include('../layouts/footer')  %> 
+     <%- include('../partials/player_sm') %> 
+     <%- include('../partials/player_lg') %> 
+
+ </article>
+
+ 
+</body>
+</html>

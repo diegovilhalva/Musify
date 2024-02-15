@@ -1,0 +1,56 @@
+<% 
+  const {
+    items:searchPlaylistsItems
+  } =  locals.searchPlaylist
+%>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('../layouts/head',{title:`Pesquisa | Musify`}) %> 
+    
+</head>
+<body>
+ <%- include('../layouts/recent_played',{recentlyPlayed:locals.recentlyPlayedTracks}) %> 
+ <article class="page custom-scrollbar" data-page>
+    
+     <%- include('../partials/top_bar.ejs',locals.currentProfile) %>
+     <%- include('../partials/bottom_nav') %>
+     <%- include('../layouts/search_filter',{
+        type:locals.type
+    }) %> 
+     <div class="main" data-main>
+        <section class="section">
+          <div class="grid-list">
+            <% searchPlaylistsItems.forEach(({id,images,name:title,owner,uri}) => { %>
+                <%
+
+                    const [image] = images || []
+
+                    const text = `Por ${owner.display_name}`                                 %>                                
+                 <%- include('../partials/card',{
+                    image,
+                    type:'playlist',
+                    title,
+                    text,
+                    link:`/playlist/${id}`,
+                    uri
+                }) %>
+         <% }) %>
+            
+         </div>
+      <%- include('../partials/pagination',locals.searchPlaylist) %>
+    </section>
+
+     </div>
+   
+     <%- include('../layouts/footer')  %> 
+     <%- include('../partials/player_sm') %> 
+     <%- include('../partials/player_lg') %> 
+
+ </article>
+
+ 
+</body>
+</html>

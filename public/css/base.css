@@ -1,0 +1,35 @@
+
+html {
+    font-family: var(--font-primary);
+    font-size: var(--fs-base);
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--on-background);
+    font-size: var(--fs-body-medium);
+    line-height: var(--lh-base);
+    height: 100vh;
+    height: 100dvh;
+}
+
+input {
+    caret-color: var(--primary);
+}
+
+input::placeholder {
+    color: var(--placeholder-color);
+}
+
+input[type='search']::-webkit-search-cancel-button{
+    display: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:where(:hover,:focus,:active) {
+    -webkit-box-shadow:inset 0 0 0 30px var(--autofill-bg) !important;
+    -webkit-text-fill-color: var(--autofill-color) !important;
+}
+

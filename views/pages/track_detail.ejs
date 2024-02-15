@@ -1,0 +1,266 @@
+<% 
+  
+  const {
+    name:trackName,
+    album:{
+        images:trackDetailImages,
+        name:albumName,
+        release_date
+    },
+    duration_ms,
+    external_urls:{spotify:spotifyUrl},
+    uri:trackUri
+  } = locals.trackDetail
+ 
+
+
+    const {
+        url: detailBanner = '/images/album-banner.png',
+        width:detailBannerWidth = 300,
+        height:detailBannerHeight = 300
+    } = trackDetailImages[0] ?? {}
+
+    const {
+        lyrics_body,
+        lyrics_copyright
+    } = locals.trackLyrics ?? {}
+    
+    const {
+        artists
+    } = locals.trackArtists
+  
+   const artistName = artists.map(({name}) => name)
+
+   const {
+        tracks:artistToptrackItems
+   } = locals.artistTopTracks
+
+   const {
+        artists:relatedArtistItems
+   } = locals.relatedArtist
+%> 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%- include('../layouts/head',{title:`${trackName} de ${artistName.join(', ')}`}) %> 
+   <link rel="stylesheet" href="/css/details.css">
+   <style>
+        .page::before {
+            background-image: url("<%= detailBanner %>");
+        }
+
+        .detail-body {
+            display: grid;
+            gap: var(--space-4);
+        }
+
+        .lyrics-title,.lyrics-text  {
+            margin-block-end: var(--space-4);
+        }
+
+        .lyrics-title {
+            color: var(--on-surface);
+        }
+        .lyrics-text, .lyrics-copyright {
+            color: var(--on-surface-variant);
+        }
+
+        .lyrics-copyright {
+            max-width: 44ch;
+            opacity: 0.8;
+        }
+        .artist-item .img-holder {
+            border-radius: var(--radius-full);
+        }
+
+        .artist-item:where(:hover,:focus-visible,:focus-within) .img-holder {
+            opacity: 1;
+        }
+
+        .artist-list {
+            max-width: 360px;
+        }
+
+        .artist-item .item-content {
+            grid-template-columns: minmax(0,1fr);
+            gap: 0;
+        }
+
+        @media (min-width:992px) {
+            .detail-body {
+                grid-template-columns: 1fr 360px;
+                gap: var(--space-6);
+            }
+        }
+
+        @media (min-width:1400px) {
+            .detail-body {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+   </style>
+</head>
+<body>
+    <%- include('../layouts/recent_played',{recentlyPlayed:locals.recentlyPlayedTracks}) %> 
+    <article class="page custom-scrollbar" data-page>
+       
+        <%- include('../partials/top_bar.ejs',locals.currentProfile) %>
+        <%- include('../partials/bottom_nav') %>
+
+        <div class="main" data-main>
+            <section class="detail-header">
+                <figure class="img-holder detail-banner">
+                    <img src="<%=detailBanner%>" width="<%= detailBannerWidth %>" height="<%= detailBannerHeight %> " alt="<%= trackName %> " class="img-cover" data-image-load-anim>
+                </figure>
+
+                <div class="detail-content">
+                    <p class="label-large detail-subtitle">
+                        Música
+                    </p>
+                    <h2 class="headline-large detail-title">
+                        <%= trackName %> 
+                    </h2>
+
+                    <div class="detail-text has-separator">
+                        <p class="label-large">
+                            <%= artistName %> 
+                        </p>
+                        <span class="separator"></span>
+                        <p class="label-large">
+                            <%= albumName %> 
+                        </p>
+                        <span class="separator"></span>
+                        <p class="label-large">
+                            <%= new Date(release_date).getFullYear() %> 
+                        </p>
+                        <span class="seperator"></span>
+                        <p class="label-large">
+                            <%= msTimeCode(duration_ms) %> 
+                        </p>
+                       
+                    </div>
+                    <div class="detail-actions">
+                        <%- include('../partials/play_btn',{
+                            variant:'filled',
+                            dataAttr:`data-track-uri="${trackUri}"`
+                        })%> 
+                        <a href="<%= spotifyUrl %>" target="_blank" class="btn btn-outline has-icon" data-ripple>
+                            <img src="/images/spotify-primary.svg" width="18" height="18" alt="">
+                            <span class="label-large">Ouvir no Spotify</span>
+                            <div class="state-layer"></div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            <div class="divider"></div>
+            <section class="section <%= lyrics_body ? 'detail-body' :'' %> ">
+                <% if (lyrics_body) { %>
+                    <div>
+                        <h2 class="lyrics-title title-large">
+                            Letra
+                        </h2>
+
+                        <p class="lyrics-text body-large">
+                            <%- lyrics_body.slice(0, lyrics_body.indexOf('...')).replace(/\n/g,'<br>') %> 
+                            
+                        </p>
+                        <p class="lyrics-copyright body-small">
+                            <%- lyrics_copyright %> 
+                        </p>
+                    </div>
+                <% } %>
+
+                <div class="artist-list list">
+                    <% artists.forEach(({images,name,id}) => { %>
+                       <% 
+                            const {
+                                url ='/images/artist-banner.png',
+                                width = 56,
+                                height = 56
+                            } = images[0] || {}
+                       %> 
+                       <div class="list-item artist-item" data-ripple title="<%= name %>">
+                            <div class="item-banner">
+                                <figure class="img-holder">
+                                    <img src="<%= url %>" width="<%= width %>" height="<%= height %> " alt="<%= name %> " class="img-cover" data-image-load-anim>
+                                </figure>
+                            </div>
+                            <div class="item-content">
+                                <p class="body-medium item-text">
+                                    Artista
+                                </p>
+                                <p class="body-large item-title">
+                                    <%= name %> 
+                                </p>
+                            </div>
+                            <a href="/artist/<%= id %>" aria-label="<%= name %> " class="item-link"></a>
+                            <div class="state-layer"></div>
+                       </div>
+                    <% }) %>
+                </div>
+            </section>
+            <div class="section">
+                <div class="title-wrapper">
+                    <h2 class="title-large section-title">
+                        <% const [firstArtist] = artistName %> 
+                        Músicas populares de <%= firstArtist %> 
+                    </h2>
+                </div>
+                <div class="list">
+                    <% artistToptrackItems.forEach(({album:{images,name:albumName},name,duration_ms,id,uri:trackUri},index) => { %>
+                        <% index++ %>
+                        <%- include('../partials/list_item',{
+                            title:name,
+                            trackNumber:index,
+                            images,
+                            albumName,
+                            duration_ms,
+                            id,
+                            trackUri
+                        }) %>  
+                    <% }) %>
+                </div>
+            </div>
+
+            <% if (relatedArtistItems.length) { %>
+                <section class="section">
+                    <div class="title-wrapper">
+                        <h2 class="title-large section-title">
+                            Artistas relacionados
+                        </h2>
+                    </div>
+                    <div class="slider" data-slider>
+                        <div class="slider-inner">
+                            <% relatedArtistItems.forEach(({images,name,type,id,uri}) => { %>
+                                <% const [image] = images || [] %>
+
+                                <%- include('../partials/card',{
+                                    variant:'artist-card',
+                                    title:name,
+                                    image,
+                                    type:'artist',
+                                    text:type,
+                                    link:`/artist/${id}`,
+                                    uri
+                                })%>  
+                            <% }) %>
+                        </div>
+                    </div>
+                </section>
+            <% } %>
+
+          
+        </div>
+      
+
+
+        <%- include('../layouts/footer')  %> 
+        <%- include('../partials/player_sm') %> 
+        <%- include('../partials/player_lg') %> 
+
+    </article>
+   
+    
+</body>
+</html>

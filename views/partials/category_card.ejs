@@ -1,0 +1,16 @@
+<div class="card category-card" data-ripple title="<%= locals.name %> ">
+    <div class="card-banner">
+        <figure class="img-holder">
+            <img src="<%= locals.url %>" width="<%= locals.width %>" height="<%= locals.height %> "  alt="<%= locals.name %> " loading="lazy" class="img-cover" data-image-load-anim>
+        </figure>
+    </div>
+
+    <div class="card-content">
+        <h3 class="title-medium">
+            <%= locals.name %> 
+        </h3>
+    </div>
+
+    <a href="/explore/<%= locals.id%> " class="card-link" aria-label="Explorar <%= locals.name %> " ></a>
+    <div class="state-layer"></div>
+</div>

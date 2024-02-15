@@ -1,0 +1,14 @@
+<nav class="pagination" role="navigation" aria-label="Pagination navigation">
+    <p class="body-medium">Página <%=` ${locals.page} de ${Math.ceil(locals.total / locals.limit)}`%> </p>
+
+    <div class="btn-wrapper">
+        <a href="<%= `${locals.baseUrl}/page/${Number(locals.page) - 1}` %> " class="icon-btn  " data-ripple <%= !locals.previous ? 'disabled' : ''%>>
+            <span class="material-symbols-rounded">chevron_left</span>
+            <div class="state-layer"></div>
+        </a>
+          <a href="<%= `${locals.baseUrl}/page/${Number(locals.page) + 1}` %> " class="icon-btn  " data-ripple <%= !locals.next ? 'disabled' : ''%>>
+            <span class="material-symbols-rounded">chevron_right</span>
+            <div class="state-layer"></div>
+        </a>
+    </div>
+</nav>

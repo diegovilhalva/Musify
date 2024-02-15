@@ -1,0 +1,55 @@
+<div class="player-lg disabled" data-player data-modal-player> 
+    <div class="handle">
+        <span class="handle-indicator"></span>
+    </div>
+    <div class="track-info">
+        <figure class="img-holder track-banner">
+            <img src="" alt="" class="img-cover" data-track-banner>
+        </figure>
+        <div class="" style="min-width: 0;">
+            <p class="title-small track-title ellipsis-one-line" data-track-name>
+                
+            </p>
+            <p class="title-small track-text ellipsis-one-line" data-track-artist>
+                
+            </p>
+        </div>
+    </div>  
+    <div class="player-controls">
+        <div class="player-range-wrapper">
+            <span class="label-small progress-label" data-progress-pos>
+                --:--
+            </span>
+            <input type="range" name="track-podition" step="1000" id="" class="player-range" data-player-progress-lg>
+            <span class="label-small progress-label" data-progress-duration>
+                --:--
+            </span>
+        </div>
+        <div class="player-control-btns">
+            <%- include('./icon_btn',{
+                icon:'skip_previous',
+                dataAttr:'data-player-prev-btn disabled'
+            }) %> 
+            <%- include('./play_btn',{
+                variant:'filled',
+                dataAttr:'data-player-control-play'
+            }) %>
+            <%- include('./icon_btn',{
+                icon:'skip_next',
+                dataAttr:'data-player-next-btn disabled'})
+             %>  
+        </div>
+    </div>
+
+    <div class="player-volume">
+        <%- include('icon_btn',{
+            icon:'volume_up',
+            dataAttr:'data-volume-btn'
+        }) %> 
+        <input type="range" name="player-volume" max="100" value="0" id="" class="player-range" data-volume-progress>
+    </div>
+</div>
+
+<div class="player-overlay" data-modal-player-toggler data-player-overlay>
+
+</div>

@@ -1,0 +1,50 @@
+<% 
+    const  {
+        items:categoryItems 
+    } = locals.categories
+%> 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%- include('../layouts/head',{title:'Explorar | Musify'}) %> 
+   <link rel="stylesheet" href="/css/explore.css">
+</head>
+<body>
+    <%- include('../layouts/recent_played',{recentlyPlayed:locals.recentlyPlayedTracks}) %> 
+    <article class="page custom-scrollbar" data-page>
+       
+        <%- include('../partials/top_bar.ejs',locals.currentProfile) %>
+        <%- include('../partials/bottom_nav',{currentRoute:'/explore'}) %>
+        <div class="main">
+            <section class="section">
+                <div class="title-wrapper">
+                    <h2 class="title-large section-title">Explorar</h2>
+                </div>
+                <div class="grid-list">
+                    <% categoryItems.forEach(({icons,id,name})=> { %>
+                        <% const {url,height,width} = icons[0] %>
+                        
+                        <%- include('../partials/category_card',{
+                            url,
+                            height,
+                            name,
+                            id
+                        }) %> 
+                    <% }) %>
+                </div>
+
+                <%- include('../partials/pagination',locals.categories) %> 
+            </section>
+        </div>
+
+
+        <%- include('../layouts/footer')  %> 
+        <%- include('../partials/player_sm') %> 
+        <%- include('../partials/player_lg') %> 
+
+    </article>
+   
+    
+</body>
+</html>

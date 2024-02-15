@@ -1,0 +1,32 @@
+
+
+.page {
+    position: relative;
+    isolation: isolate;
+
+}
+
+.page::before,
+.page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 480px;
+    z-index: -1;
+}
+
+.page::before {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: top;
+    opacity: 0.5;
+}
+
+.page::after {
+    background-image: linear-gradient(180deg,#0000,var(--background));
+    backdrop-filter: blur(150px);
+}
+
+

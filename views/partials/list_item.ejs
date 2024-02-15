@@ -1,0 +1,52 @@
+<%
+    const {url = '/images/track-banner.png',width=56,height=56} = locals.images?.find(item => item.width < 200) || {}
+ %> 
+
+<div class="list-item" title="<%= locals.title %>" data-ripple>
+    <% if (locals.trackNumber) { %>
+        <span class="item-number body-medium">
+            <%= locals.trackNumber %>
+        <% if (!locals.images) { %>
+            <%- include('./play_btn',{
+                variant:'filled',
+                dataAttr:`data-track-uri="${locals.trackUri
+            }"`}) %>
+        <% } %>
+        </span>
+    <% } %>
+
+    <% if (locals.images) { %>
+       <div class="item-banner">
+        <figure class="img-holder">
+            <img src="<%= url %>" width="<%= width %>"  height="<%= height %> " loading="lazy" alt="<%= locals.title %> " class="img-cover" data-image-load-anim>
+        </figure>
+        <%- include('./play_btn',{variant:'filled',dataAttr:`data-track-uri="${locals.trackUri}"`}) %> 
+       </div>
+    <% } %>
+
+    <div class="item-content">
+        <div class="wrapper">
+            <h3 class="body-large item-title ellipsis-one-line">
+                <%= locals.title %> 
+            </h3>
+            <p class="body-medium item-text ellipsis-one-line">
+                <%= locals.text %> 
+            </p>
+        </div>
+        <% if (locals.albumName) { %>
+         <p class="item-album body-medium">
+            <%= locals.albumName %> 
+         </p>
+        <% } %>
+        <% if (locals.duration_ms) { %>
+            <p class="trailing-text label-small">
+                <%= msTimeCode(locals.duration_ms) %>
+
+            </p>
+        <% } %>
+    </div>
+
+    <a href="/track/<%= locals.id %>" aria-label="details <%= locals.title%> " class="item-link"></a>
+    <div class="state-layer"></div>
+
+</div>

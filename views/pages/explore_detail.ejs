@@ -1,0 +1,64 @@
+<% 
+    const {name:categoryName} = locals.catInfo,
+    {playlists:{items:catePlaylistItems},
+    page,baseUrl} = locals.catPlaylist
+
+ %> 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%- include('../layouts/head',{title:`Explorar ${categoryName} | Musify`}) %> 
+  
+</head>
+<body>
+    <%- include('../layouts/recent_played',{recentlyPlayed:locals.recentlyPlayedTracks}) %> 
+    <article class="page custom-scrollbar" data-page>
+       
+        <%- include('../partials/top_bar.ejs',locals.currentProfile) %>
+        <%- include('../partials/bottom_nav') %>
+        <div class="main" data-main>
+            <section class="section">
+                <div class="title-wrapper">
+                    <h2 class="title-large section-title">
+                        <%= categoryName  %> 
+                    </h2>
+                </div>
+                <div class="grid-list">
+                    <% catePlaylistItems.forEach(item => { %>
+                        <% if (item !== null) { %>
+                            <% 
+                                    const  {id,images,name:title,description,uri} = item
+                                    const [image] = images || []
+                            %>
+                            <%- include('../partials/card',{
+                                image,
+                                type:'playlist',
+                                title,
+                                text:description,
+                                link:`/playlist/${id}`,
+                                uri
+                            }) %> 
+                                   
+                        <% } %>
+                    <% }) %>
+                </div>
+
+                <%- include('../partials/pagination',{
+                    baseUrl,
+                    page,
+                    ...locals.catPlaylist.playlists
+                }) %> 
+            </section>
+        </div>
+
+
+        <%- include('../layouts/footer')  %> 
+        <%- include('../partials/player_sm') %> 
+        <%- include('../partials/player_lg') %> 
+
+    </article>
+   
+    
+</body>
+</html>

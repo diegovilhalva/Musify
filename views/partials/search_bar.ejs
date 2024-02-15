@@ -1,0 +1,19 @@
+<div class="search-bar">
+    <span class="material-symbols-rounded leading-icon">
+        search
+    </span>
+    <img src="/images/logo.svg" class="animate logo" width="97" height="24" alt="Musify logo" data-logo>
+    <form action="/search" method="post" class="search-form">
+        <label for="search" class="sr-only">O que você quer ouvir?</label>
+        <input type="search" name="query" id="search" class="search-field body-large" placeholder="O que você quer ouvir?" value="<%=locals.query %>" required data-search-field>
+    </form>
+    <% const {url = '/images/avatar.png',width=30,height=30} = locals.images.find(item => item.width === 64) || {} %>
+    <div class="menu-wrapper" data-menu-wrapper>
+        <button class="icon-btn" aria-label="My profile" data-ripple data-menu-toggler>
+            <img src="<%= url %>" alt="<%= locals.display_name %>"  width="<%= width %>" class="avatar">
+            <div class="state-layer"></div>
+        </button>
+        <%- include('./menu') %>
+    </div>
+    <%- include('./icon_btn',{variant:'clear',icon:'close',dataAttr:'data-search-clear'})%>
+</div>
